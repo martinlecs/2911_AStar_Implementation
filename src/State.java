@@ -57,7 +57,7 @@ public class State {
 		}
 		return false;
 	}
-	public void deleteJob (Edge e) {
+	public void removeJob (Edge e) {
 		ListIterator<Edge> curr = this.jobList.listIterator();
 		while(curr.hasNext()) {
 			Edge next = curr.next();
@@ -67,4 +67,13 @@ public class State {
 			}
 		}
 	}
+
+	protected LinkedList<Edge> copyJobList() {
+		LinkedList<Edge> newList = new LinkedList<Edge>();
+		for(Edge e: this.getJobList()) {
+			newList.add(e);
+		}
+		return newList;
+	}
+	
 }

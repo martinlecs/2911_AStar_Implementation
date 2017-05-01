@@ -70,7 +70,7 @@ public class Node {
 	public void printNodeInfo() {
 		//Value is connected to X with cost Y
 		for (Edge curr : connected) {
-			System.out.println(this.getValue() + " is connected to " + curr.getTarget()
+			System.out.println(this.getValue() + " is connected to " + curr.getLocation2()
 							   + " with cost " + curr.getCost());
 		}
 	}

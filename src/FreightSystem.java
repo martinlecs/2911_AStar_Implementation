@@ -11,7 +11,7 @@ public class FreightSystem {
 		
 		//declare a new Graph
 		Graph g = new Graph();
-		ArrayList<Tuple<String, String>> jobList = new ArrayList<Tuple<String, String>>();
+		LinkedList<Edge> jobList = new LinkedList<Edge>();
 		
 		Scanner sc = null;
 		try {
@@ -35,8 +35,8 @@ public class FreightSystem {
 		    				break;
 		    			case "Job":
 		    				//Make a tuple
-		    				Tuple<String, String> job = new Tuple<String, String>(a[1], a[2]);
-		    				jobList.add(job);
+		    				Edge e = new Edge (0, a[1], a[2]); //edge with 0 cost isn't really an edge
+		    				jobList.add(e);
 		    				break;
 		    			default:
 		    				continue;
@@ -44,9 +44,9 @@ public class FreightSystem {
 		    	}
 		    }
 			if (!jobList.isEmpty()) {
-				AStarSearch.UniformCostSearch(g, "Dubbo");
-				List<Node> path = AStarSearch.printPath(g, "Dubbo");
-				System.out.println("Path: " + path);
+				Searcher.AStarSearch(g, jobList);
+				//List<Node> path = Searcher.printPath(g, "Dubbo");
+				//System.out.println("Path: " + path);
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println ("File was not found");

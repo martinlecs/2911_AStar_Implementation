@@ -23,8 +23,8 @@ public class Graph {
 		Node b = findNode(end);
 		if (a != null && b != null) {
 			//Create edges. Edge needs Node and weight
-			Edge edge1 = new Edge(b, weight);
-			Edge edge2 = new Edge(a, weight);
+			Edge edge1 = new Edge(weight, start, end);
+			Edge edge2 = new Edge(weight, end, start);
 
 			//Add edges to the right lists
 			a.getConnected().add(edge1);
