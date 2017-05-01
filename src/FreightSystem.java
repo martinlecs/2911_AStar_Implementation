@@ -44,8 +44,8 @@ public class FreightSystem {
 		    	}
 		    }
 			if (!jobList.isEmpty()) {
-				UniformCostSearchAlgo.UniformCostSearch(g, "Dubbo");
-				List<Node> path = UniformCostSearchAlgo.printPath(g, "Dubbo");
+				AStarSearch.UniformCostSearch(g, "Dubbo");
+				List<Node> path = AStarSearch.printPath(g, "Dubbo");
 				System.out.println("Path: " + path);
 			}
 		} catch (FileNotFoundException e) {

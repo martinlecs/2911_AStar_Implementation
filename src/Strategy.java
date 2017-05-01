@@ -1,16 +1,17 @@
 import java.util.Comparator;
 
-public class Strategy implements Comparator<Node> {
+public class Strategy implements Comparator<State> {
 
 	@Override
-    public int compare(Node i, Node j){
-        if((i.getCostSoFar() + getHeuristic(i,j)) > (j.getCostSoFar() + getHeuristic(i,j))){
-            return 1;
-        } else if ((i.getCostSoFar() + getHeuristic(i,j)) < (j.getCostSoFar() + + getHeuristic(i,j))){
-            return -1;
-        } else{
-            return 0;
-        }
+    public int compare(State i, State j){
+//        if((i.getCostSoFar() + getHeuristic(i,j)) > (j.getCostSoFar() + getHeuristic(i,j))){
+//            return 1;
+//        } else if ((i.getCostSoFar() + getHeuristic(i,j)) < (j.getCostSoFar() + + getHeuristic(i,j))){
+//            return -1;
+//        } else{
+//            return 0;
+//        }
+		return 0;
     }
 	public static int getHeuristic(Node n1, Node n2) {
 		

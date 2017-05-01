@@ -1,13 +1,14 @@
+import java.util.LinkedList;
 
 public class State {
 	
 	private String location;
-	private Edge[] jobList;
-	private int costSoFar;
-	private Edge[] completedJobs;
+	private LinkedList<Edge> jobList;
+	private double costSoFar;
+	private LinkedList<Edge> completedJobs;
 	private State prevState;
 	
-	public State (String location, Edge[] jobList, int costSoFar, Edge[] completedJobs, State prevState) {
+	public State (String location, LinkedList<Edge> jobList, double costSoFar, LinkedList<Edge> completedJobs, State prevState) {
 		this.location = location;
 		this.jobList = jobList;
 		this.costSoFar = costSoFar;
@@ -21,22 +22,22 @@ public class State {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public Edge[] getJobList() {
+	public LinkedList<Edge> getJobList() {
 		return jobList;
 	}
-	public void setJobList(Edge[] jobList) {
+	public void setJobList(LinkedList<Edge> jobList) {
 		this.jobList = jobList;
 	}
-	public int getCostSoFar() {
+	public double getCostSoFar() {
 		return costSoFar;
 	}
-	public void setCostSoFar(int costSoFar) {
+	public void setCostSoFar(double costSoFar) {
 		this.costSoFar = costSoFar;
 	}
-	public Edge[] getCompletedJobs() {
+	public LinkedList<Edge> getCompletedJobs() {
 		return completedJobs;
 	}
-	public void setCompletedJobs(Edge[] completedJobs) {
+	public void setCompletedJobs(LinkedList<Edge> completedJobs) {
 		this.completedJobs = completedJobs;
 	}
 	public State getPrevState() {
