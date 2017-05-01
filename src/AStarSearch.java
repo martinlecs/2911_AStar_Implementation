@@ -41,6 +41,7 @@ public class AStarSearch{
             //create a new job list and complete list
             //TO-DO
             LinkedList<Edge> newJobList = (LinkedList<Edge>) jobList.clone();
+            if(checkJobs(new Edge(g.findNode(current.getPrevState().getLocation()), g.findNode(current.getLocation()))))
             //checkJob, removeJob
             //If job, need to add unloading cost to cost_so_far
             LinkedList<Edge> completedJobs = new LinkedList<Edge>();

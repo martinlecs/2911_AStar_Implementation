@@ -1,4 +1,6 @@
 import java.util.LinkedList;
+import java.util.ListIterator;
+
 
 public class State {
 	
@@ -45,5 +47,24 @@ public class State {
 	}
 	public void setPrevState(State prevState) {
 		this.prevState = prevState;
+	}
+	
+	public boolean checkJob(Edge e) {
+		for(Edge curr : this.jobList) {
+			if(curr.equals(e)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public void deleteJob (Edge e) {
+		ListIterator<Edge> curr = this.jobList.listIterator();
+		while(curr.hasNext()) {
+			Edge next = curr.next();
+			if(next.equals(e)) {
+				curr.remove();
+				break;
+			}
+		}
 	}
 }
