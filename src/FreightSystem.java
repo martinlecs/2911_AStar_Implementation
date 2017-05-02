@@ -45,8 +45,6 @@ public class FreightSystem {
 		    }
 			if (!jobList.isEmpty()) {
 				Searcher.AStarSearch(g, jobList);
-				//List<Node> path = Searcher.printPath(g, "Dubbo");
-				//System.out.println("Path: " + path);
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println ("File was not found");

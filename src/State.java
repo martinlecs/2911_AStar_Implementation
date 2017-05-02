@@ -75,5 +75,13 @@ public class State {
 		}
 		return newList;
 	}
+
+	@Override
+	public String toString() {
+		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", completedJobs="
+				+ completedJobs + ", prevState=" + prevState.getLocation() + "]";
+	}
+	
+	
 	
 }

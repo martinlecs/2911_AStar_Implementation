@@ -16,6 +16,8 @@ import java.util.Comparator;
 public class Searcher{
     public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList){
     	
+    	//BUG: jobList keeps getting created and added. Ie. Keeps repeating the same job list
+    	
     	//Create initial state (Sydney)
     	State initial = new State ("Sydney", jobList, 0, new LinkedList<Edge>(), null);
     	
@@ -28,12 +30,15 @@ public class Searcher{
         HashSet<State> close = new HashSet<State>();
         boolean found = false;
         double cost_so_far;
-        double nodesExpanded = 0;
+        int nodesExpanded = 0;
 
         //while frontier is not empty
         while(!open.isEmpty()){
-            System.out.println(open);
+        	if(!open.contains(initial)) {
+        		System.out.println(open);
+        	}
             State current = open.poll();
+            nodesExpanded++;
             close.add(current);
             cost_so_far = current.getCostSoFar();
             
@@ -46,6 +51,7 @@ public class Searcher{
 	            if(current.checkJob(e)) {
 	            	double totalCost = current.getCostSoFar();
 	                //If job, need to add unloading cost to cost_so_far
+	            	System.out.println(g.findNode(current.getLocation()).getUnloadCost());
 	            	totalCost += g.findNode(current.getLocation()).getUnloadCost();
 	            	current.setCostSoFar(totalCost);
 	            	current.removeJob(e);
@@ -53,9 +59,13 @@ public class Searcher{
 	            }
             }
             //Check for the finishing state (where all jobs have been completed)
-            if (jobList.isEmpty()) {
+            if (current.getJobList().isEmpty()) {
             	found = true;
-            	System.out.println(nodesExpanded);
+            	System.out.println(nodesExpanded + " nodes expanded");
+            	System.out.println("cost = " + current.getCostSoFar());
+            	System.out.println(printPath(current));
+            	System.out.println(current);
+            	System.out.println(current.getPrevState());
             	break;
             }
             
@@ -84,7 +94,6 @@ public class Searcher{
                 	//Make a new state
                 	State next = new State (child, current.getJobList(), new_cost, current.getCompletedJobs(), current);
                     open.add(next);
-                    nodesExpanded++;
                 }
             }
         }
@@ -97,17 +106,27 @@ public class Searcher{
      * @param target
      * @return
      */
-    public static List<Node> printPath(Graph g, String end){
-    	Node target = g.findNode(end);
-        List<Node> path = new ArrayList<Node>();
-        for(Node node = target; node != null; node = node.getParent()){
-            path.add(node);
-        }
-        
-        Collections.reverse(path);
-
-        return path;
+//    public static List<Node> printPath(Graph g, String end){
+//    	Node target = g.findNode(end);
+//        List<Node> path = new ArrayList<Node>();
+//        for(Node node = target; node != null; node = node.getParent()){
+//            path.add(node);
+//        }
+//        
+//        Collections.reverse(path);
+//
+//        return path;
+//    }
+    private static List<String> printPath (State end) {
+    	List<String> path = new ArrayList<String>();
+    	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
+    		path.add(state.getLocation());
+    	}
+    	Collections.reverse(path);
+    	return path;
     }
+    
+    
 }
 
 
