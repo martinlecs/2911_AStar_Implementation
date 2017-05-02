@@ -3,15 +3,15 @@ import java.util.Iterator;
 
 public class Node {
 	private final String value;
-	private double unloadCost = 0;
-	private double costSoFar = 0;
+	private int unloadCost = 0;
+	private int costSoFar = 0;
     private ArrayList<Edge> connected = new ArrayList<Edge>();
     private Node parent = null;
     private ArrayList<Tuple<String, String>> jobList = new ArrayList<Tuple<String, String>>();
     private ArrayList<Tuple<String, String>> completedJobs = new ArrayList<Tuple<String, String>>();
 
     //Constructor
-    public Node(String value, double cost) {
+    public Node(String value, int cost) {
     	this.value = value;
     	this.unloadCost = cost;
     }
@@ -32,17 +32,17 @@ public class Node {
 	public String getValue() {
 		return value;
 	}
-	public double getUnloadCost() {
+	public int getUnloadCost() {
 		return unloadCost;
 	}
-	public void setUnloadCost(double unloadCost) {
+	public void setUnloadCost(int unloadCost) {
 		this.unloadCost = unloadCost;
 	}
-	public double getCostSoFar() {
+	public int getCostSoFar() {
 		return costSoFar;
 	}
 
-	public void setCostSoFar(double costSoFar) {
+	public void setCostSoFar(int costSoFar) {
 		this.costSoFar = costSoFar;
 	}
 

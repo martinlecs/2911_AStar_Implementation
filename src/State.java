@@ -6,11 +6,11 @@ public class State {
 	
 	private String location;
 	private LinkedList<Edge> jobList;
-	private double costSoFar;
+	private int costSoFar;
 	private LinkedList<Edge> completedJobs;
 	private State prevState;
 	
-	public State (String location, LinkedList<Edge> jobList, double costSoFar, LinkedList<Edge> completedJobs, State prevState) {
+	public State (String location, LinkedList<Edge> jobList, int costSoFar, LinkedList<Edge> completedJobs, State prevState) {
 		this.location = location;
 		this.jobList = jobList;
 		this.costSoFar = costSoFar;
@@ -30,10 +30,10 @@ public class State {
 	public void setJobList(LinkedList<Edge> jobList) {
 		this.jobList = jobList;
 	}
-	public double getCostSoFar() {
+	public int getCostSoFar() {
 		return costSoFar;
 	}
-	public void setCostSoFar(double costSoFar) {
+	public void setCostSoFar(int costSoFar) {
 		this.costSoFar = costSoFar;
 	}
 	public LinkedList<Edge> getCompletedJobs() {
@@ -78,8 +78,9 @@ public class State {
 
 	@Override
 	public String toString() {
+		String s = (this.getPrevState() == null) ? "at start" : prevState.getLocation();
 		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", completedJobs="
-				+ completedJobs + ", prevState=" + prevState.getLocation() + "]";
+				+ completedJobs + ", prevState=" + s + "]";
 	}
 	
 	

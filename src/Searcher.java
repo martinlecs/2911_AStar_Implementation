@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-//diff between uniform cost search and dijkstra algo is that UCS has a goal
 /**
  * Returns boolean value indicating if path has been found
  * @author martinle
@@ -24,23 +23,19 @@ public class Searcher{
     	//Implement comparator for State
         Comparator<State> strategy = new Strategy();
         PriorityQueue<State> open = new PriorityQueue<State>(strategy);
+        HashSet<State> close = new HashSet<State>();
+        boolean found = false;
+        int nodesExpanded = 0;
         
         //add our initial state to the PQ
         open.add(initial);
-        HashSet<State> close = new HashSet<State>();
-        boolean found = false;
-        double cost_so_far;
-        int nodesExpanded = 0;
 
         //while frontier is not empty
         while(!open.isEmpty()){
-        	if(!open.contains(initial)) {
-        		System.out.println(open);
-        	}
             State current = open.poll();
             nodesExpanded++;
             close.add(current);
-            cost_so_far = current.getCostSoFar();
+            int cost_so_far = current.getCostSoFar(); // this is an issue
             
             if(current.getPrevState() != null) {
 	            //update job completion
@@ -49,13 +44,15 @@ public class Searcher{
 	            current.setJobList(current.copyJobList());
 	            Edge e = new Edge(0, current.getPrevState().getLocation(), current.getLocation());
 	            if(current.checkJob(e)) {
-	            	double totalCost = current.getCostSoFar();
 	                //If job, need to add unloading cost to cost_so_far
-	            	System.out.println(g.findNode(current.getLocation()).getUnloadCost());
-	            	totalCost += g.findNode(current.getLocation()).getUnloadCost();
+	            	int totalCost = g.findNode(current.getLocation()).getUnloadCost() + cost_so_far; //unload cost is correct
+//	            	System.out.println("unload cost " + current.getLocation() + " = " + g.findNode(current.getLocation()).getUnloadCost());
+//	            	System.out.println("cost so far = " + cost_so_far);
+//	            	System.out.println("Total cost to get to " + current.getLocation() + " from " + current.getPrevState().getLocation() +  "= " + totalCost);
 	            	current.setCostSoFar(totalCost);
 	            	current.removeJob(e);
 	            	current.getCompletedJobs().add(e);
+	            
 	            }
             }
             //Check for the finishing state (where all jobs have been completed)
@@ -77,7 +74,8 @@ public class Searcher{
             
             for(Edge edge: curr.getConnected()) {
                 String child = edge.getLocation2();
-            	double new_cost = cost_so_far + edge.getCost(); //add weight of edges to cost so far
+                System.out.println(edge.getLocation2() + " edge = " + edge.getCost());
+            	int new_cost = cost_so_far + edge.getCost(); //add weight of edges to cost so far
                 
             	//if not in close and not in open, add to open. 
             	//OR (even if it exists in the open PQ, if it has a cost that is less then a similar state,
@@ -106,22 +104,12 @@ public class Searcher{
      * @param target
      * @return
      */
-//    public static List<Node> printPath(Graph g, String end){
-//    	Node target = g.findNode(end);
-//        List<Node> path = new ArrayList<Node>();
-//        for(Node node = target; node != null; node = node.getParent()){
-//            path.add(node);
-//        }
-//        
-//        Collections.reverse(path);
-//
-//        return path;
-//    }
     private static List<String> printPath (State end) {
     	List<String> path = new ArrayList<String>();
     	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
     		path.add(state.getLocation());
     	}
+    	path.add("Sydney");
     	Collections.reverse(path);
     	return path;
     }

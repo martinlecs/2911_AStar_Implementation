@@ -1,17 +1,17 @@
 
 public class Edge {
-    private final double cost;
+    private final int cost;
     private final String location1;
     private final String location2;
 
     
-    public Edge(double cost, String location1, String location2) {
+    public Edge(int cost, String location1, String location2) {
 		this.cost = cost;
 		this.location1 = location1;
 		this.location2 = location2;
 	}
 
-	public double getCost() {
+	public int getCost() {
 		return cost;
 	}
 
