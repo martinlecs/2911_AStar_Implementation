@@ -11,10 +11,7 @@ public class FreightSystem {
 		
 		//declare a new Graph
 		Graph g = new Graph();;
-		LinkedList<Edge> jobList = new LinkedList<Edge>();
-//		State newState = new State("Hello", null, 0, 0, null, null);
-//		newState.testState();
-//		
+		LinkedList<Edge> jobList = new LinkedList<Edge>();	
 		Scanner sc = null;
 		try {
 			sc = new Scanner(new FileReader(args[0]));

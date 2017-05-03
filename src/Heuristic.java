@@ -3,7 +3,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class Heuristic implements Strategy{
@@ -15,11 +14,12 @@ public class Heuristic implements Strategy{
 	public int getHeuristic(Graph g, State state) {
 		getMapOfCities(g);
 		getFloydWarshall(g, cities);
+		getHashOfIntegersToCities (g);
 		int hCost = 0;
 		for(Edge e: state.getJobList()) {
 			hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost());
 		}
-		hCost += findClosestJobCost (g, state); //will be bad on graph where there is only 1 job
+		hCost += getCostsToReachAllJobs (g, state); //will be bad on graph where there is only 1 job
 		//hCost += getEstimateToNextJob (g, state);
 		return hCost;
 	}
@@ -46,42 +46,41 @@ public class Heuristic implements Strategy{
 	 * @param s
 	 * @return
 	 */
-	public int findClosestJobCost (Graph g, State s) {
+	public int getCostsToReachAllJobs (Graph g, State s) {
 		HashMap<String, Integer> cities = this.cities;
 		double[][] matrix = this.matrix;
 		//check if i is in joblist
 		int i = 0;
-		double min = matrix[cities.get(s.getLocation())][i];
+		double total = matrix[cities.get(s.getLocation())][i];
 		for( ; i < cities.size(); i++) {
 			if(checkInJobList(g, s, i)) {
-				min += matrix[cities.get(s.getLocation())][i];
+				total += matrix[cities.get(s.getLocation())][i];
 			}
 		}
-		return (int) min;
+		return (int) total;
 	}
 	
 	private boolean checkInJobList(Graph g, State s, int city) {
-		//make the stupid hash
-		if(hash == null) {
-			HashMap<Integer, String> hash = new HashMap<Integer, String>();
-			int counter = 0;
-			Iterator<Entry<String, Node>> it = g.getMapOfNodes().entrySet().iterator();
-			while(it.hasNext()) {
-				Node n = it.next().getValue();
-				if(!hash.containsKey(n.getValue())) {
-					hash.put(counter, n.getValue());
-					counter++;
-				}
-			}
-			this.hash = hash;
-		}
 		for (Edge edge : s.getJobList()) {
-			if (hash.get(city).equals(edge.getLocation1()) || hash.get(city).equals(edge.getLocation2())) {
-				//if current location is the START or END of a job
+			if (this.hash.get(city).equals(edge.getLocation1()) || this.hash.get(city).equals(edge.getLocation2())) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	private void getHashOfIntegersToCities (Graph g) {
+		HashMap<Integer, String> hash = new HashMap<Integer, String>();
+		int counter = 0;
+		Iterator<Entry<String, Node>> it = g.getMapOfNodes().entrySet().iterator();
+		while(it.hasNext()) {
+			Node n = it.next().getValue();
+			if(!hash.containsKey(n.getValue())) {
+				hash.put(counter, n.getValue());
+				counter++;
+			}
+		}
+		this.hash = hash;
 	}
 	
 	private void getMapOfCities(Graph g) {
@@ -109,10 +108,6 @@ public class Heuristic implements Strategy{
 		this.matrix = f.floydWarshall();
 	}
 }
-
-
-
-//how far it is from current state to other jobs.
 
 final class sortEdges implements Comparator<Edge> {
     

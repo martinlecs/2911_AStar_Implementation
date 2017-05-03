@@ -14,8 +14,6 @@ public class FloydWarshall {
     // graph represented by an adjacency matrix
     private double[][] graph;
 
-    private boolean negativeCycle;
-
     public FloydWarshall(int n) {
         this.graph = new double[n][n];
         initGraph();
@@ -31,10 +29,6 @@ public class FloydWarshall {
                 }
             }
         }
-    }
-
-    public boolean hasNegativeCycle() {
-        return this.negativeCycle;
     }
 
     // utility function to add edges to the adjacencyList
@@ -53,10 +47,6 @@ public class FloydWarshall {
                 for (int j = 0; j < n; j++) {
                     distances[i][j] = Math.min(distances[i][j], distances[i][k] + distances[k][j]);
                 }
-            }
-
-            if (distances[k][k] < 0.0) {
-                this.negativeCycle = true;
             }
         }
         return distances;
