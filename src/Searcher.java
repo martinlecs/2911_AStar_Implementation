@@ -1,7 +1,5 @@
 import java.util.PriorityQueue;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,13 +16,10 @@ public class Searcher{
     	//Create initial state (Sydney)
     	State initial = new State ("Sydney", jobList, 0, 0, new LinkedList<Edge>(), null);
     	
-        Comparator<State> comparator = new PQComparator();
-        PriorityQueue<State> open = new PriorityQueue<State>(comparator);
-        //HashSet<State> close = new HashSet<State>();
+        Comparator<State> comparator = new StateComparator();
+        PriorityQueue<State> open = new PriorityQueue<State>(comparator);;
         boolean found = false;
         int nodesExpanded = 0;
-        
-        //add our initial state to the PQ
         open.add(initial);
 
         //while frontier is not empty
@@ -70,11 +65,7 @@ public class Searcher{
             	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs(), current);
             	Strategy s = new Heuristic();
             	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
-               
-            	//if(!close.contains(next) /*&& !open.contains(child) || (new_cost < cost_so_far)*/){ 
-            		//System.out.println(current.getLocation() + " goes to " +  next.getLocation() + " with cost = " + next.getCostSoFar());
-                    open.add(next);
-               // }
+                open.add(next);
             }
         }
         return found;
