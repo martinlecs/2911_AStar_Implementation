@@ -7,17 +7,26 @@ public class State {
 	private String location;
 	private LinkedList<Edge> jobList;
 	private int costSoFar;
+	private int heuristic;
 	private LinkedList<Edge> completedJobs;
 	private State prevState;
 	
-	public State (String location, LinkedList<Edge> jobList, int costSoFar, LinkedList<Edge> completedJobs, State prevState) {
+	public State (String location, LinkedList<Edge> jobList, int costSoFar, int heuristic, LinkedList<Edge> completedJobs, State prevState) {
 		this.location = location;
 		this.jobList = jobList;
 		this.costSoFar = costSoFar;
+		this.heuristic = heuristic;
 		this.completedJobs = completedJobs;
 		this.prevState = prevState;
 	}
-	
+	public int getHeuristic() {
+		return heuristic;
+	}
+
+	public void setHeuristic(int heuristic) {
+		this.heuristic = heuristic;
+	}
+
 	public String getLocation() {
 		return location;
 	}
@@ -117,7 +126,6 @@ public class State {
 			return false;
 		return true;
 	}
-	private 
 	
 	
 	

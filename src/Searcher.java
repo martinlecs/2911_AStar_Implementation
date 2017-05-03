@@ -15,29 +15,25 @@ import java.util.Comparator;
 public class Searcher{
     public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList){
     	
-    	//BUG: jobList keeps getting created and added. Ie. Keeps repeating the same job list
-    	
     	//Create initial state (Sydney)
-    	State initial = new State ("Sydney", jobList, 0, new LinkedList<Edge>(), null);
+    	State initial = new State ("Sydney", jobList, 0, 0, new LinkedList<Edge>(), null);
     	
-    	//Implement comparator for State
-        Comparator<State> strategy = new Strategy();
-        PriorityQueue<State> open = new PriorityQueue<State>(strategy);
-        HashSet<State> close = new HashSet<State>();
+        Comparator<State> comparator = new PQComparator();
+        PriorityQueue<State> open = new PriorityQueue<State>(comparator);
+        //HashSet<State> close = new HashSet<State>();
         boolean found = false;
         int nodesExpanded = 0;
-        int addCrap = 0;
         
         //add our initial state to the PQ
         open.add(initial);
 
         //while frontier is not empty
         while(!open.isEmpty()){
+        	//Print out queue and their
             State current = open.poll();
-//            System.out.println("Currently looking at " + current.getLocation() );
+            //close.add(current);
             nodesExpanded++;
-            close.add(current);
-            int cost_so_far = current.getCostSoFar(); // this is an issue
+            int cost_so_far = current.getCostSoFar();
             
             if(current.getPrevState() != null) {
 	            //update job completion
@@ -58,9 +54,7 @@ public class Searcher{
             	found = true;
             	System.out.println(nodesExpanded + " nodes expanded");
             	System.out.println("cost = " + current.getCostSoFar());
-            	System.out.println(printPath(current));
-//            	System.out.println(current);
-//            	System.out.println(current.getPrevState());
+            	System.out.println(getPath(current));
             	break;
             }
             
@@ -71,21 +65,19 @@ public class Searcher{
                 String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); //add weight of edges to cost so far
 //            	System.out.println(edge.getLocation2() + " totalCost = " + new_cost);
-            	//TO-DO: need to modify that condition to actually work.
-            	State next = new State (neighbour, current.getJobList(), new_cost, current.getCompletedJobs(), current);
+            		
+            	//Create a new heuristic class
+            	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs(), current);
+            	Strategy s = new Heuristic();
+            	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
                
-            	if(!close.contains(next) /*&& !open.contains(child) || (new_cost < cost_so_far)*/){ 
-            		System.out.println(current.getLocation() + " goes to " +  next.getLocation() + " with cost = " + next.getCostSoFar());
-            		addCrap++;
-            		//if(addCrap == 15) return false;
-                	//Make a new state
-                	//State next = new State (neighbour, current.getJobList(), new_cost, current.getCompletedJobs(), current);
+            	//if(!close.contains(next) /*&& !open.contains(child) || (new_cost < cost_so_far)*/){ 
+            		//System.out.println(current.getLocation() + " goes to " +  next.getLocation() + " with cost = " + next.getCostSoFar());
                     open.add(next);
-                }
+               // }
             }
         }
         return found;
-
     }
 
     /**
@@ -93,7 +85,7 @@ public class Searcher{
      * @param target
      * @return
      */
-    private static List<String> printPath (State end) {
+    private static List<String> getPath (State end) {
     	List<String> path = new ArrayList<String>();
     	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
     		path.add(state.getLocation());
@@ -102,6 +94,10 @@ public class Searcher{
     	Collections.reverse(path);
     	return path;
     }
+//    private static String printPath (Graph g, List<String> path) {
+//    	//iterate through pairs
+//    	
+//    }
     
     
 }

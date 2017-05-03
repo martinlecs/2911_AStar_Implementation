@@ -1,9 +1,8 @@
 
 public class Edge {
-    private final int cost;
+    private final int cost;	//the weight of the edge
     private final String location1;
     private final String location2;
-
     
     public Edge(int cost, String location1, String location2) {
 		this.cost = cost;
@@ -57,6 +56,7 @@ public class Edge {
 	public String toString() {
 		return "Edge [cost=" + cost + ", location1=" + location1 + ", location2=" + location2 + "]";
 	}
+	
 	
 	
     
