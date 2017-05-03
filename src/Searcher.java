@@ -1,9 +1,9 @@
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Returns boolean value indicating if path has been found
@@ -57,10 +57,11 @@ public class Searcher{
             	int new_cost = cost_so_far + edge.getCost(); 
             	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs(), current);
             	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
-                open.add(next);
+            	open.add(next);
             }
         }
         return found;
+        
     }
 
     /**

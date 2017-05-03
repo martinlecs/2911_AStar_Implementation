@@ -92,43 +92,103 @@ public class State {
 				+ completedJobs + ", prevState=" + s + "]";
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		State other = (State) obj;
-		//Check if LinkedList<Edge> is the same
-		if (completedJobs == null) {
-			if (other.completedJobs != null)
-				return false;
-		} else if (!completedJobs.equals(other.completedJobs))
-			return false;
-		if (costSoFar != other.costSoFar)
-			return false;
-		if (jobList == null) {
-			if (other.jobList != null)
-				return false;
-		} else if (!jobList.equals(other.jobList))
-			return false;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location))
-			return false;
-		if (prevState == null) {
-			if (other.prevState != null)
-				return false;
-		} else if (!prevState.equals(other.prevState))
-			return false;
-		return true;
-	}
-	
-	
-	
-	
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((completedJobs == null) ? 0 : completedJobs.hashCode());
+//		result = prime * result + costSoFar;
+//		result = prime * result + heuristic;
+//		result = prime * result + ((jobList == null) ? 0 : jobList.hashCode());
+//		result = prime * result + ((location == null) ? 0 : location.hashCode());
+//		result = prime * result + ((prevState == null) ? 0 : prevState.hashCode());
+//		return result;
+//	}
+//	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		State other = (State) obj;
+//		if (completedJobs == null) {
+//			if (other.completedJobs != null)
+//				return false;
+//			System.out.println("printing");
+//		} else if (!EdgeListEquals(this.completedJobs, other.completedJobs))
+//			return false;
+//		if (costSoFar != other.costSoFar)
+//			return false;
+//		if(this.heuristic != other.heuristic) return false;
+//		if (jobList == null) {
+//			if (other.jobList != null)
+//				return false;
+//		} else if (!EdgeListEquals(this.jobList, other.jobList))
+//			return false;
+//		if (location == null) {
+//			if (other.location != null)
+//				return false;
+//		} else if (!location.equals(other.location))
+//			return false;
+//		if (prevState == null) {
+//			if (other.prevState != null)
+//				return false;
+//		} else if (!prevState.equals(other.prevState))
+//			return false;
+//		return true;
+//	}
+//	
+//	private boolean EdgeListEquals (LinkedList<Edge> a, LinkedList<Edge> b) {
+//		//Check if either are null
+//		if(a == null || b == null) return false;
+//		//check if size is the same
+//		if(a.size() != b.size()) return false; //This is causing a problem
+//		//check if reference is the same
+//		if(a == b) return true;
+//		
+//		for(Edge e1 : a) {
+//			for(Edge e2 : b) {
+//				if(e1.equals(e2)) {
+//					continue;
+//				} else {
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
+//	
+//	public void testState () {
+//		//Make two new states and compare them
+//		LinkedList<Edge> list1 = new LinkedList<Edge>();
+//		LinkedList<Edge> list2 = new LinkedList<Edge>();
+//		
+//		Edge e1 = new Edge(150, "Home", "Uni");
+//		Edge e2 = new Edge(50, "Uni", "Shops");
+//		Edge e3 = new Edge(12, "Home", "Toilet");
+//		
+//		list1.add(e1);
+//		list1.add(e2);
+//		
+//		list2.add(e1);
+//		list2.add(e3);
+//		
+//		LinkedList<Edge> list3 = new LinkedList<Edge>();
+//		LinkedList<Edge> list4 = new LinkedList<Edge>();
+//		
+//		list3.add(e3);
+//		list3.add(e2);
+//		State blank1 = new State ("House", list1, 0, 0, list3, null);
+//		State blank2 = new State ("Home", list2, 20, 100239, list4, blank1);
+//		State s1 = new State("Home", list1, 0, 0, list3, blank1);
+//		State s2 = new State("Home", list1, 0, 0, list3, blank1);
+//		
+//		if(s1.equals(s2)) System.out.println("equal");
+//		else System.out.println("false");
+//	}
+//	
 	
 }

@@ -10,9 +10,11 @@ public class FreightSystem {
 	public static void main (String[] args) throws IOException{
 		
 		//declare a new Graph
-		Graph g = new Graph();
+		Graph g = new Graph();;
 		LinkedList<Edge> jobList = new LinkedList<Edge>();
-		
+//		State newState = new State("Hello", null, 0, 0, null, null);
+//		newState.testState();
+//		
 		Scanner sc = null;
 		try {
 			sc = new Scanner(new FileReader(args[0]));
@@ -34,9 +36,11 @@ public class FreightSystem {
 		    				g.addEdge(a[2], a[3], Integer.parseInt(a[1]));
 		    				break;
 		    			case "Job":
-		    				//Make a tuple
-		    				Edge e = new Edge (0, a[1], a[2]); //edge with 0 cost isn't really an edge
+		    				//Create a job, represented as edges.
+		    				Edge e = new Edge (0, a[1], a[2]); 
 		    				jobList.add(e);
+		    				break;
+		    			case "Print":
 		    				break;
 		    			default:
 		    				continue;
