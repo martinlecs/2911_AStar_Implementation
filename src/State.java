@@ -82,6 +82,44 @@ public class State {
 		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", completedJobs="
 				+ completedJobs + ", prevState=" + s + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		State other = (State) obj;
+		//Check if LinkedList<Edge> is the same
+		if (completedJobs == null) {
+			if (other.completedJobs != null)
+				return false;
+		} else if (!completedJobs.equals(other.completedJobs))
+			return false;
+		if (costSoFar != other.costSoFar)
+			return false;
+		if (jobList == null) {
+			if (other.jobList != null)
+				return false;
+		} else if (!jobList.equals(other.jobList))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (prevState == null) {
+			if (other.prevState != null)
+				return false;
+		} else if (!prevState.equals(other.prevState))
+			return false;
+		return true;
+	}
+	private 
+	
+	
 	
 	
 	
