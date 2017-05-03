@@ -88,7 +88,7 @@ public class Searcher{
 //    private static String printPath (Graph g, List<String> path) {
 //    	//iterate through pairs
 //    	
-//    }
+//    }//The order that jobs were completed are stored in LinkedList<Edge> completedJobs (make sure to reverse this)
     
     
 }
