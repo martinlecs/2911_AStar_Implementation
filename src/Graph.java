@@ -1,15 +1,14 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Graph {
-	ArrayList<Node> listOfNodes;
-	//consider Map<E, Node> for faster lookup time
+	HashMap<String, Node> mapOfNodes;
 	
 	public Graph() {
-		this.listOfNodes = new ArrayList<Node>();
+		this.mapOfNodes = new HashMap<String, Node>();
 	}
 	public void addNode (String val, int cost) {
 		Node n = new Node(val, cost);
-		listOfNodes.add(n);
+		mapOfNodes.put(val, n);
 	}
 	/**
 	 * Creates an edge between two existing nodes.
@@ -19,8 +18,8 @@ public class Graph {
 	 */
 	public void addEdge (String start, String end, int weight) {
 		//find start node, if it exists already in the List
-		Node a = findNode(start);
-		Node b = findNode(end);
+		Node a = this.mapOfNodes.get(start);
+		Node b = this.mapOfNodes.get(end);
 		if (a != null && b != null) {
 			//Create edges. Edge needs Node and weight
 			Edge edge1 = new Edge(weight, start, end);
@@ -31,22 +30,10 @@ public class Graph {
 			b.getConnected().add(edge2);
 		}
 	}
-	public Node findNode(String val) {
-		for(Node curr : listOfNodes) { //Probs better to just use a HashMap
-			if (curr.getValue().equals(val)) {
-				return curr;
-			}
-		}
-		return null;
+	public HashMap<String, Node> getMapOfNodes() {
+		return mapOfNodes;
 	}
-	public void printGraph() {
-		for (Node n : listOfNodes) {
-			System.out.println(n);
-		}
-	}
-	public void printNodeInfo() {
-		for(Node curr : listOfNodes) {
-			curr.printNodeInfo();
-		}
+	public void setMapOfNodes(HashMap<String, Node> mapOfNodes) {
+		this.mapOfNodes = mapOfNodes;
 	}
 }

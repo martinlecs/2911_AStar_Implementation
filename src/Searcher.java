@@ -35,7 +35,7 @@ public class Searcher{
 	            current.setJobList(current.copyJobList());
 	            Edge e = new Edge(0, current.getPrevState().getLocation(), current.getLocation());
 	            if(current.checkJob(e)) {
-	            	cost_so_far += g.findNode(current.getLocation()).getUnloadCost(); //unload cost is correct
+	            	cost_so_far += g.getMapOfNodes().get(current.getLocation()).getUnloadCost(); //unload cost is correct
 //	            	System.out.println("unload cost " + current.getLocation() + " = " + g.findNode(current.getLocation()).getUnloadCost());
 //	            	System.out.println("cost so far = " + cost_so_far);
 //	            	System.out.println("Total cost to get to " + current.getLocation() + " from " + current.getPrevState().getLocation() +  "= " + cost_so_far);
@@ -54,7 +54,7 @@ public class Searcher{
             }
             
             //Find graph node for current state
-            Node curr = g.findNode(current.getLocation());
+            Node curr = g.getMapOfNodes().get(current.getLocation());
             
             for(Edge edge: curr.getConnected()) {
                 String neighbour = edge.getLocation2();

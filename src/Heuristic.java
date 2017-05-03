@@ -8,7 +8,7 @@ public class Heuristic implements Strategy{
 	public int getHeuristic(Graph g, State state) {
 		int hCost = 0;
 		for(Edge e: state.getJobList()) {
-			hCost += (e.getCost() + g.findNode(e.getLocation2()).getUnloadCost());
+			hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost());
 		}
 		hCost -=  getEstimateToNextJob (g, state);
 		
@@ -18,8 +18,8 @@ public class Heuristic implements Strategy{
 	private int getEstimateToNextJob (Graph g, State s) {
 		//get current location, find neighours 
 		sortEdges comparator = new sortEdges();
-		g.findNode(s.getLocation()).getConnected().sort(comparator);
-		ArrayList<Edge> sortedList = g.findNode(s.getLocation()).getConnected();
+		g.getMapOfNodes().get(s.getLocation()).getConnected().sort(comparator);
+		ArrayList<Edge> sortedList = g.getMapOfNodes().get(s.getLocation()).getConnected();
 		LinkedList<Edge> jobList = s.getJobList();
 		int costNextJob = 0;
 		for(Edge e: sortedList) {
