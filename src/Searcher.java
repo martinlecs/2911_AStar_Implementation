@@ -70,6 +70,9 @@ public class Searcher{
      * @return
      */
     private static List<String> getPath (State end) {
+ 
+    	
+    	
     	List<String> path = new ArrayList<String>();
     	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
     		path.add(state.getLocation());
@@ -82,7 +85,7 @@ public class Searcher{
 //    	//iterate through pairs
 //    	
 //    }//The order that jobs were completed are stored in LinkedList<Edge> completedJobs (make sure to reverse this)
-    
+//    
     
 }
 
