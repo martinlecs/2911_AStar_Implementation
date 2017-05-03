@@ -33,6 +33,7 @@ public class Searcher{
         //while frontier is not empty
         while(!open.isEmpty()){
             State current = open.poll();
+//            System.out.println("Currently looking at " + current.getLocation() );
             nodesExpanded++;
             close.add(current);
             int cost_so_far = current.getCostSoFar(); // this is an issue
@@ -45,11 +46,11 @@ public class Searcher{
 	            Edge e = new Edge(0, current.getPrevState().getLocation(), current.getLocation());
 	            if(current.checkJob(e)) {
 	                //If job, need to add unloading cost to cost_so_far
-	            	int totalCost = g.findNode(current.getLocation()).getUnloadCost() + cost_so_far; //unload cost is correct
+	            	cost_so_far += g.findNode(current.getLocation()).getUnloadCost(); //unload cost is correct
 //	            	System.out.println("unload cost " + current.getLocation() + " = " + g.findNode(current.getLocation()).getUnloadCost());
 //	            	System.out.println("cost so far = " + cost_so_far);
-//	            	System.out.println("Total cost to get to " + current.getLocation() + " from " + current.getPrevState().getLocation() +  "= " + totalCost);
-	            	current.setCostSoFar(totalCost);
+//	            	System.out.println("Total cost to get to " + current.getLocation() + " from " + current.getPrevState().getLocation() +  "= " + cost_so_far);
+	            	current.setCostSoFar(cost_so_far);
 	            	current.removeJob(e);
 	            	current.getCompletedJobs().add(e);
 	            
@@ -61,8 +62,8 @@ public class Searcher{
             	System.out.println(nodesExpanded + " nodes expanded");
             	System.out.println("cost = " + current.getCostSoFar());
             	System.out.println(printPath(current));
-            	System.out.println(current);
-            	System.out.println(current.getPrevState());
+//            	System.out.println(current);
+//            	System.out.println(current.getPrevState());
             	break;
             }
             
@@ -73,10 +74,9 @@ public class Searcher{
             Node curr = g.findNode(current.getLocation());
             
             for(Edge edge: curr.getConnected()) {
-                String child = edge.getLocation2();
-                System.out.println(edge.getLocation2() + " edge = " + edge.getCost());
+                String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); //add weight of edges to cost so far
-                
+//            	System.out.println(edge.getLocation2() + " totalCost = " + new_cost);
             	//if not in close and not in open, add to open. 
             	//OR (even if it exists in the open PQ, if it has a cost that is less then a similar state,
             	//add it it to open
@@ -88,9 +88,9 @@ public class Searcher{
 //            	if  successor in open or successor in closed
 //                IMPROVE(successor)
             	
-                if((!close.contains(child) && !open.contains(child)) || (new_cost < cost_so_far)){ 
+                if(!close.contains(neighbour) /*&& !open.contains(child) || (new_cost < cost_so_far)*/){ 
                 	//Make a new state
-                	State next = new State (child, current.getJobList(), new_cost, current.getCompletedJobs(), current);
+                	State next = new State (neighbour, current.getJobList(), new_cost, current.getCompletedJobs(), current);
                     open.add(next);
                 }
             }
