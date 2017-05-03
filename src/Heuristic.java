@@ -14,7 +14,7 @@ public class Heuristic implements Strategy{
 		
 		return hCost;
 	}
-	//If a job is adjacent to current node
+	//If a job is adjacent to current node, effective if a lot of jobs are close together
 	private int getEstimateToNextJob (Graph g, State s) {
 		//get current location, find neighours 
 		sortEdges comparator = new sortEdges();

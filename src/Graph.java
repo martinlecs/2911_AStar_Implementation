@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class Graph {
-	HashMap<String, Node> mapOfNodes;
+	private final HashMap<String, Node> mapOfNodes;
 	
 	public Graph() {
 		this.mapOfNodes = new HashMap<String, Node>();
@@ -32,8 +32,5 @@ public class Graph {
 	}
 	public HashMap<String, Node> getMapOfNodes() {
 		return mapOfNodes;
-	}
-	public void setMapOfNodes(HashMap<String, Node> mapOfNodes) {
-		this.mapOfNodes = mapOfNodes;
 	}
 }
