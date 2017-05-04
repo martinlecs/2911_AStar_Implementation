@@ -20,7 +20,7 @@ public class Heuristic implements Strategy{
 		for(Edge e: state.getJobList()) {
 			//hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost());
 		}
-		//hCost += getCostsToReachAllJobs (g, state); 
+		hCost += getCostsToReachAllJobs (g, state); 
 		//hCost += getEstimateToNextJob (g, state);
 		return hCost;
 	}

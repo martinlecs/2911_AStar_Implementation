@@ -1,6 +1,7 @@
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 /**
@@ -11,20 +12,23 @@ import java.util.ArrayList;
 public class Searcher{
     public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList){
     	PriorityQueue<State> open = new PriorityQueue<State>(new StateComparator());
+    	HashSet<State> closed = new HashSet<State>();
     	 
     	boolean found = false;
         int nodesExpanded = 0;
         
     	//Create initial state (Sydney)
-    	State initial = new State ("Sydney", jobList, 0, 0, new LinkedList<Edge>(), null);
+    	State initial = new State ("Sydney", jobList, 0, 0, null);
         open.add(initial);
 
         //while frontier is not empty
         while(!open.isEmpty()){
         	//Print out queue and their
             State current = open.poll();
+            closed.add(current);
             nodesExpanded++;
             int cost_so_far = current.getCostSoFar();
+           // System.out.println((closed));
             
             if(current.getPrevState() != null) {
 	            //update job completion
@@ -34,7 +38,6 @@ public class Searcher{
 	            	cost_so_far += g.getMapOfNodes().get(current.getLocation()).getUnloadCost();
 	            	current.setCostSoFar(cost_so_far);
 	            	current.removeJob(e);
-	            	current.getCompletedJobs().add(e);
 	            }
             }
             //Check for the finishing state (where all jobs have been completed)
@@ -53,12 +56,15 @@ public class Searcher{
             for(Edge edge: curr.getConnected()) {
                 String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); 
-            	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs() ,current);
-            	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
-            	open.add(next);
+            	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current);
+        		next.setHeuristic(s.getHeuristic(g, next) /*+ new_cost*/);
+        		//tset
+//        		System.out.println("im here");
+//            	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
+            		open.add(next);	
+//            	}
             }
         }
-        
         return found;       
     }
 

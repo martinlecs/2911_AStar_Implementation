@@ -23,6 +23,28 @@ public class Edge {
 	}
 
 	@Override
+	protected Edge clone() throws CloneNotSupportedException {
+		Edge newEdge = new Edge(this.getCost(), this.getLocation1(), this.getLocation2());
+		return newEdge;
+	}
+
+	@Override
+	public String toString() {
+		return "Edge [cost=" + cost + ", location1=" + location1 + ", location2=" + location2 + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + cost;
+		result = prime * result + ((location1 == null) ? 0 : location1.hashCode());
+		result = prime * result + ((location2 == null) ? 0 : location2.hashCode());
+//		System.out.println("edge hash=" + result);
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -31,7 +53,7 @@ public class Edge {
 		if (getClass() != obj.getClass())
 			return false;
 		Edge other = (Edge) obj;
-		if (Double.doubleToLongBits(cost) != Double.doubleToLongBits(other.cost))
+		if (cost != other.cost)
 			return false;
 		if (location1 == null) {
 			if (other.location1 != null)
@@ -45,17 +67,7 @@ public class Edge {
 			return false;
 		return true;
 	}
-
-	@Override
-	protected Edge clone() throws CloneNotSupportedException {
-		Edge newEdge = new Edge(this.getCost(), this.getLocation1(), this.getLocation2());
-		return newEdge;
-	}
-
-	@Override
-	public String toString() {
-		return "Edge [cost=" + cost + ", location1=" + location1 + ", location2=" + location2 + "]";
-	}
+	
 	
 	
 	

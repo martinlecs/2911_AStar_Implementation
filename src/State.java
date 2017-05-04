@@ -9,17 +9,14 @@ public class State {
 	private LinkedList<Edge> jobList;
 	private int costSoFar;
 	private int heuristic;
-	private LinkedList<Edge> completedJobs;
 	private LinkedList<Edge> path = new LinkedList<Edge>();
 	private State prevState;
 	
-	public State (String location, LinkedList<Edge> jobList, int costSoFar, int heuristic, LinkedList<Edge> completedJobs, State prevState) {
+	public State (String location, LinkedList<Edge> jobList, int costSoFar, int heuristic, State prevState) {
 		this.location = location;
 		this.jobList = jobList;
 		this.costSoFar = costSoFar;
 		this.heuristic = heuristic;
-		this.completedJobs = completedJobs;
-//		this.path = path;
 		this.prevState = prevState;
 	}
 	public int getHeuristic() {
@@ -47,12 +44,6 @@ public class State {
 	}
 	public void setCostSoFar(int costSoFar) {
 		this.costSoFar = costSoFar;
-	}
-	public LinkedList<Edge> getCompletedJobs() {
-		return completedJobs;
-	}
-	public void setCompletedJobs(LinkedList<Edge> completedJobs) {
-		this.completedJobs = completedJobs;
 	}
 	public State getPrevState() {
 		return prevState;
@@ -97,21 +88,19 @@ public class State {
 	@Override
 	public String toString() {
 		String s = (this.getPrevState() == null) ? "at start" : prevState.getLocation();
-		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", completedJobs="
-				+ completedJobs + ", prevState=" + s + "]";
+		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", prevState=" + s + "]";
 	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((completedJobs == null) ? 0 : completedJobs.hashCode());
 		result = prime * result + costSoFar;
 		result = prime * result + heuristic;
-		//these need to be rewritten
-		result = prime * result + ((jobList == null) ? 0 : jobList.hashCode());
+		result = prime * result + ((jobList == null) ? 0 : (int) jobListHash(jobList));
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((prevState == null) ? 0 : prevState.hashCode());
+//		System.out.println(result);
 		return result;
 	}
 	
@@ -122,14 +111,10 @@ public class State {
 		if (getClass() != obj.getClass()) return false;
 		
 		State other = (State) obj;
-		if (completedJobs == null) {
-			if (other.completedJobs != null) return false;
-		} else if (!EdgeListEquals(this.completedJobs, other.completedJobs)) return false;
-		
+
 		//Compare integers
-		if (costSoFar != other.costSoFar) return false;
+		if (this.costSoFar != other.costSoFar) return false;
 		if(this.heuristic != other.heuristic) return false;
-		
 		if (jobList == null) {
 			if (other.jobList != null) return false;
 		} else if (!EdgeListEquals(this.jobList, other.jobList)) return false;
@@ -146,6 +131,7 @@ public class State {
 		}
 		return true;
 	}
+	
 	private boolean EdgeListEquals (LinkedList<Edge> a, LinkedList<Edge> b) {
 	//Check if either are null
 	if(a == null || b == null) return false;
@@ -165,11 +151,14 @@ public class State {
 	}
 	return true;
 	}
+	
 	private int jobListHash(LinkedList<Edge> e) {
-		if (e == null) return 0;
-		else {
-			Iterator<Edge> iterator = e.iterator();
-			return (iterator.next().hashCode() + iterator.next().hashCode());
+		Iterator<Edge> iterator = e.iterator();
+		int hash = 0;
+		while(iterator.hasNext()) {
+			Edge curr = iterator.next();
+			hash += curr.hashCode();
 		}
+		return hash;
 	}
 }
