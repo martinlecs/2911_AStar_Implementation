@@ -15,6 +15,7 @@ public class Searcher{
     	 
     	boolean found = false;
         int nodesExpanded = 0;
+        String jobPath = "";
         
     	//Create initial state (Sydney)
     	State initial = new State ("Sydney", jobList, 0, 0, new LinkedList<Edge>(), null);
@@ -43,7 +44,9 @@ public class Searcher{
             	found = true;
             	System.out.println(nodesExpanded + " nodes expanded");
             	System.out.println("cost = " + current.getCostSoFar());
-            	System.out.println(getPath(current));
+//            	System.out.println(getPath(current));
+//            	System.out.println(jobPath);
+            	printPath(g, current, jobList);
             	break;
             }
             
@@ -54,13 +57,15 @@ public class Searcher{
             for(Edge edge: curr.getConnected()) {
                 String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); 
-            	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs(), current);
+            	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs() ,current);
+//            	next.setPath(current.getPath());
+//            	next.getPath().add(edge);
             	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
             	open.add(next);
             }
         }
-        return found;
         
+        return found;       
     }
 
     /**
@@ -70,8 +75,6 @@ public class Searcher{
      */
     private static List<String> getPath (State end) {
  
-    	
-    	
     	List<String> path = new ArrayList<String>();
     	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
     		path.add(state.getLocation());
@@ -80,13 +83,29 @@ public class Searcher{
     	Collections.reverse(path);
     	return path;
     }
-//    private static String printPath (Graph g, List<String> path) {
-//    	//iterate through pairs
-//    	
-//    }//The order that jobs were completed are stored in LinkedList<Edge> completedJobs (make sure to reverse this)
-//    
-    
+    private static void printPath (Graph g, State end, LinkedList<Edge> jobList) {
+    	//Get list of states accessed
+    	LinkedList<State> path = new LinkedList<State>();
+    	ArrayList<Edge> jobPath = new ArrayList<Edge>();
+    	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
+    		//path.add(state);
+    		jobPath.add(new Edge(0, state.getPrevState().getLocation() , state.getLocation()));
+    	}
+    	Collections.reverse(jobPath);
+    	
+    	//iterate through path and check if its in the job list, if so print X else print Y
+    	for(Edge curr : jobPath) {
+    		String s = "";
+    		for(Edge jobCurr : jobList) {
+        		if(curr.getLocation1().equals(jobCurr.getLocation1()) && curr.getLocation2().equals(jobCurr.getLocation2())) {
+        			s = "Job " + curr.getLocation1() + " to " + curr.getLocation2();
+        		}
+    		}
+    		if (s == "") {
+    			s = "Empty " + curr.getLocation1() + " to " + curr.getLocation2();
+    		}
+    		System.out.println(s);
+    	}
+    }    
 }
-
-
 
