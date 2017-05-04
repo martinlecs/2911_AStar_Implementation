@@ -13,6 +13,7 @@ public class Searcher{
     public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList){
     	PriorityQueue<State> open = new PriorityQueue<State>(new StateComparator());
     	HashSet<State> closed = new HashSet<State>();
+    	Strategy s = new Heuristic();
     	 
     	boolean found = false;
         int nodesExpanded = 0;
@@ -51,13 +52,13 @@ public class Searcher{
             
             //Find graph node for current state
             Node curr = g.getMapOfNodes().get(current.getLocation());
-        	Strategy s = new Heuristic();
         	
             for(Edge edge: curr.getConnected()) {
                 String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); 
             	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current);
-        		next.setHeuristic(s.getHeuristic(g, next) /*+ new_cost*/);
+        	 	
+        		next.setHeuristic(s.getHeuristic(g, next)  /* + new_cost*/);
         		//tset
 //        		System.out.println("im here");
 //            	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
