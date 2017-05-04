@@ -1,7 +1,6 @@
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +14,6 @@ public class Searcher{
     	 
     	boolean found = false;
         int nodesExpanded = 0;
-        String jobPath = "";
         
     	//Create initial state (Sydney)
     	State initial = new State ("Sydney", jobList, 0, 0, new LinkedList<Edge>(), null);
@@ -44,8 +42,6 @@ public class Searcher{
             	found = true;
             	System.out.println(nodesExpanded + " nodes expanded");
             	System.out.println("cost = " + current.getCostSoFar());
-//            	System.out.println(getPath(current));
-//            	System.out.println(jobPath);
             	printPath(g, current, jobList);
             	break;
             }
@@ -58,8 +54,6 @@ public class Searcher{
                 String neighbour = edge.getLocation2();
             	int new_cost = cost_so_far + edge.getCost(); 
             	State next = new State (neighbour, current.getJobList(), new_cost, 0 ,current.getCompletedJobs() ,current);
-//            	next.setPath(current.getPath());
-//            	next.getPath().add(edge);
             	next.setHeuristic(s.getHeuristic(g, next) + new_cost);
             	open.add(next);
             }
@@ -73,19 +67,18 @@ public class Searcher{
      * @param target
      * @return
      */
-    private static List<String> getPath (State end) {
- 
-    	List<String> path = new ArrayList<String>();
-    	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
-    		path.add(state.getLocation());
-    	}
-    	path.add("Sydney");
-    	Collections.reverse(path);
-    	return path;
-    }
+//    private static List<String> getPath (State end) {
+// 
+//    	List<String> path = new ArrayList<String>();
+//    	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
+//    		path.add(state.getLocation());
+//    	}
+//    	path.add("Sydney");
+//    	Collections.reverse(path);
+//    	return path;
+//    }
     private static void printPath (Graph g, State end, LinkedList<Edge> jobList) {
     	//Get list of states accessed
-    	LinkedList<State> path = new LinkedList<State>();
     	ArrayList<Edge> jobPath = new ArrayList<Edge>();
     	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
     		//path.add(state);
