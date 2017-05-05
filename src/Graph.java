@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Graph {
 	private final HashMap<String, Node> mapOfNodes;
+	private final ArrayList<Edge> ListOfEdges;
 	
 	public Graph() {
 		this.mapOfNodes = new HashMap<String, Node>();
+		this.ListOfEdges = new ArrayList<Edge>();
 	}
 	public void addNode (String val, int cost) {
 		Node n = new Node(val, cost);
@@ -33,5 +36,7 @@ public class Graph {
 	public HashMap<String, Node> getMapOfNodes() {
 		return mapOfNodes;
 	}
-	
+	public ArrayList<Edge> getListOfEdges() {
+		return ListOfEdges;
+	}
 }

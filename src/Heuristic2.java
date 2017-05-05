@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-public class Heuristic implements Strategy{
+public class Heuristic2 implements Strategy{
 	HashMap<String, Integer> cities;
 	HashMap<Integer, String> hash;
 	double[][] matrix;
@@ -21,26 +21,9 @@ public class Heuristic implements Strategy{
 			hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost()) + e.getCost();
 		}
 		//hCost += getCostsToReachAllJobs (g, state); 
-		hCost += getEstimateToNextJob (g, state);
 		return hCost;
 	}
-	//If a job is adjacent to current node, effective if a lot of jobs are close together
-	private int getEstimateToNextJob (Graph g, State s) {
-		//get current location, find neighours 
-		sortEdges comparator = new sortEdges();
-		g.getMapOfNodes().get(s.getLocation()).getConnected().sort(comparator);
-		ArrayList<Edge> sortedList = g.getMapOfNodes().get(s.getLocation()).getConnected();
-		LinkedList<Edge> jobList = s.getJobList();
-		int costNextJob = 0;
-		for(Edge e: sortedList) {
-			for(Edge job : jobList) {
-				if(e.getLocation2() == job.getLocation1()) {
-					costNextJob = job.getCost();
-				}
-			}
-		}
-		return costNextJob;
-	}
+
 	/**
 	 * Gets total travel cost from current location to all other jobs.
 	 * @param g

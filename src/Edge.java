@@ -1,6 +1,6 @@
 
 public class Edge {
-    private final int cost;	//the weight of the edge
+    private int cost;	//the weight of the edge
     private final String location1;
     private final String location2;
     
@@ -12,6 +12,9 @@ public class Edge {
 
 	public int getCost() {
 		return cost;
+	}
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 	public String getLocation1() {
@@ -40,7 +43,6 @@ public class Edge {
 		result = prime * result + cost;
 		result = prime * result + ((location1 == null) ? 0 : location1.hashCode());
 		result = prime * result + ((location2 == null) ? 0 : location2.hashCode());
-//		System.out.println("edge hash=" + result);
 		return result;
 	}
 
@@ -53,8 +55,8 @@ public class Edge {
 		if (getClass() != obj.getClass())
 			return false;
 		Edge other = (Edge) obj;
-		if (cost != other.cost)
-			return false;
+//		if (cost != other.cost)
+//			return false;
 		if (location1 == null) {
 			if (other.location1 != null)
 				return false;
