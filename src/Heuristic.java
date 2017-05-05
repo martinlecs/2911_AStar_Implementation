@@ -18,7 +18,7 @@ public class Heuristic implements Strategy{
 		getHashOfIntegersToCities (g);
 		int hCost = 0;
 		for(Edge e: state.getJobList()) {
-			hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost());
+			//hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost());
 		}
 		//hCost += getCostsToReachAllJobs (g, state); 
 		//hCost += getEstimateToNextJob (g, state);

@@ -28,20 +28,9 @@ public class Searcher{
             closed.add(current);
             nodesExpanded++;
             int cost_so_far = current.getCostSoFar();
-           // System.out.println((closed));
+            System.out.println((closed));
+            //System.out.println(cost_so_far);
             
-//            if(current.getPrevState() != null) {
-//	            //update job completion
-//	            current.setJobList(current.copyJobList());
-//	            Edge e = new Edge(0, current.getPrevState().getLocation(), current.getLocation());
-//	            if(current.checkJob(e)) {
-//	            	cost_so_far += g.getMapOfNodes().get(current.getLocation()).getUnloadCost();
-//	            	current.setCostSoFar(cost_so_far);
-//	            	current.removeJob(e);
-//	            }
-//            }
-//            
-            //Check for the finishing state (where all jobs have been completed)
             if (current.getJobList().isEmpty()) {
             	found = true;
             	System.out.println(nodesExpanded + " nodes expanded");
@@ -51,34 +40,24 @@ public class Searcher{
             }
             //Find graph node for current state
             Node curr = g.getMapOfNodes().get(current.getLocation());
-
         	
             for(Edge edge: curr.getConnected()) {
-
+            	
             	int new_cost = cost_so_far + edge.getCost(); 
-            	System.out.println("cost before unload=" + new_cost);
             	State next = new State (edge.getLocation2(), new LinkedList<Edge>(), new_cost, 0 ,current);
             	
                 //update job completion
                 next.setJobList(current.copyJobList());
                 Edge e = new Edge(0, next.getPrevState().getLocation(), next.getLocation());
-            	System.out.println(e);
                 if(next.checkJob(e)) {
-                	System.out.println("new_cost in loop=" + new_cost);
-                	cost_so_far += g.getMapOfNodes().get(next.getLocation()).getUnloadCost();
-                	new_cost += (g.getMapOfNodes().get(next.getLocation()).getUnloadCost());
-                	//next.setCostSoFar(cost_so_far);
-
-                	System.out.println("unload=" + g.getMapOfNodes().get(next.getLocation()).getUnloadCost());
-                	System.out.println("cost_so_far + unload=" + cost_so_far);
-                	System.out.println("new_cost + unload=" + cost_so_far);
-
+                	new_cost += g.getMapOfNodes().get(next.getLocation()).getUnloadCost();
+                	next.setCostSoFar(new_cost);
                 	next.removeJob(e);
                 }
         		next.setHeuristic(s.getHeuristic(g, next)  /* + new_cost*/);
-//             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
+             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
             		open.add(next);	
-//            	}
+             	}
             }
         }
         return found;       
