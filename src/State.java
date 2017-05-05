@@ -1,6 +1,6 @@
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Objects;
 
 /**
  * Implementation of State class for A* search
@@ -113,88 +113,107 @@ public class State {
 	/**
 	 * Overriding the hashCode method, for the closed set
 	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + costSoFar;
-		result = prime * result + heuristic;
-		result = prime * result + ((jobList == null) ? 0 : (int) jobListHash(jobList));
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((prevState == null) ? 0 : prevState.hashCode());
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + costSoFar;
+//		result = prime * result + heuristic;
+//		result = prime * result + ((jobList == null) ? 0 : (int) jobListHash(jobList));
+//		result = prime * result + ((location == null) ? 0 : location.hashCode());
+//		result = prime * result + ((prevState == null) ? 0 : prevState.hashCode());
 //		System.out.println(result);
-		return result;
-	}
+//		return result;
+//	}
 	
-	/**
-	 * Overriding the equals method, for the closed set
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		
-		State other = (State) obj;
+//	/**
+//	 * Overriding the equals method, for the closed set
+//	 */
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (obj == null) return false;
+//		if (this == obj) return true;
+//		if (!(obj instanceof State)) return false;
+//		
+//		State other = (State) obj;
+//
+//		//Compare integers
+//		if (this.costSoFar != other.costSoFar) return false;
+//		if(this.heuristic != other.heuristic) return false;
+//		
+//		if (jobList == null && other.jobList != null) {
+//			return false;
+//		} else if (!EdgeListEquals(this.jobList, other.jobList)) return false;
+//		
+//		if (location == null && other.location != null) {
+//			return false;
+//		} else if (!location.equals(other.location)) return false;
+//		
+//		if (prevState == null && other.prevState != null) {
+//			return false;
+//		} else if (!prevState.equals(other.prevState)) { 
+//			return false;
+//		}
+//		return true;
+//	}
+//	
+//	/**
+//	 * Check if a list of edges is equal to another list of edges
+//	 * @param a		List A
+//	 * @param b		List B
+//	 * @return		Boolean value
+//	 */
+//	private boolean EdgeListEquals (LinkedList<Edge> a, LinkedList<Edge> b) {
+//		//Check if either are null
+//		if((a == null && b != null) || (a != null && b == null)) return false;
+//		//check if size is the same
+//		if(a.size() != b.size()) return false; //This is causing a problem
+//		//check if reference is the same
+//		if(a == b) return true;
+//		
+//		for(Edge e1 : a) {
+//			for(Edge e2 : b) {
+//				if(!e1.equals(e2)) {
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
+//
+//	/**
+//	 * Creates a hashcode for a LinkedList of Edges
+//	 * @param e
+//	 * @return
+//	 */
+//	private int jobListHash(LinkedList<Edge> e) {
+//		System.out.println(e);
+//		final int prime = 31;
+//		int result = 1;
+//		for(Edge curr : e) {
+//			result += prime * curr.hashCode();
+//		}
+//		return result;
+//	}
+//    @Override
+//    public boolean equals(Object o) {
+//
+//        if (o == this) return true;
+//        if (!(o instanceof State)) {
+//            return false;
+//        }
+//        State user = (State) o;
+//        return (location == user.location) &&
+//                Objects.equals(costSoFar, user.costSoFar) &&
+//                Objects.equals(heuristic, user.heuristic);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//    	System.out.println(this.location + "cost=" + this.costSoFar);
+//    	System.out.println(Objects.hash(location, jobList, costSoFar, heuristic, path, prevState));
+//        return Objects.hash(location, jobList, costSoFar, heuristic, path, prevState);
+//        
+//    }
 
-		//Compare integers
-		if (this.costSoFar != other.costSoFar) return false;
-		if(this.heuristic != other.heuristic) return false;
-		if (jobList == null) {
-			if (other.jobList != null) return false;
-		} else if (!EdgeListEquals(this.jobList, other.jobList)) return false;
-		
-		if (location == null) {
-			if (other.location != null) return false;
-		} else if (!location.equals(other.location)) return false;
-		
-		if (prevState == null) {
-			if (other.prevState != null)
-				return false;
-		} else if (!prevState.equals(other.prevState)) { 
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Check if a list of edges is equal to another list of edges
-	 * @param a		List A
-	 * @param b		List B
-	 * @return		Boolean value
-	 */
-	private boolean EdgeListEquals (LinkedList<Edge> a, LinkedList<Edge> b) {
-	//Check if either are null
-	if(a == null || b == null) return false;
-	//check if size is the same
-	if(a.size() != b.size()) return false; //This is causing a problem
-	//check if reference is the same
-	if(a == b) return true;
-	
-	for(Edge e1 : a) {
-		for(Edge e2 : b) {
-			if(e1.equals(e2)) {
-				continue;
-			} else {
-				return false;
-			}
-		}
-	}
-	return true;
-	}
-	
-	/**
-	 * Creates a hashcode for a LinkedList of Edges
-	 * @param e
-	 * @return
-	 */
-	private int jobListHash(LinkedList<Edge> e) {
-		Iterator<Edge> iterator = e.iterator();
-		int hash = 0;
-		while(iterator.hasNext()) {
-			Edge curr = iterator.next();
-			hash += curr.hashCode();
-		}
-		return hash;
-	}
 }

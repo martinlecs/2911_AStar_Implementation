@@ -64,9 +64,7 @@ public class FreightSystem {
 					
 					f.addEdge(citiesMap.get(curr.getLocation1()), citiesMap.get(curr.getLocation2()), (double) curr.getCost());
 				}
-				System.out.println(citiesMap.values());
-				System.out.println(citiesMap.keySet());
-			
+				
 				double[][] matrix = f.floydWarshall();
 
 				//from a, must be able to find a shortest path to any node
@@ -121,7 +119,6 @@ public class FreightSystem {
 	 */
   public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList, Strategy strategy){
     	PriorityQueue<State> open = new PriorityQueue<State>(new StateComparator());
-    	HashSet<State> closed = new HashSet<State>();
     	 
     	boolean found = false;
         int nodesExpanded = 0;
@@ -134,7 +131,6 @@ public class FreightSystem {
         while(!open.isEmpty()){
         	//Print out queue and their
             State current = open.poll();
-            closed.add(current);
             nodesExpanded++;
             int cost_so_far = current.getCostSoFar();
             
@@ -163,9 +159,7 @@ public class FreightSystem {
                 	next.removeJob(e);
                 }
         		next.setHeuristic(strategy.getHeuristic(g, next));
-	             while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
-            		open.add(next);	
-	             }
+        		open.add(next);	
             }
         }
         return found;       

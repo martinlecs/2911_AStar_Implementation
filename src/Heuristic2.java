@@ -119,7 +119,7 @@ public class Heuristic2 implements Strategy{
 			}
 		}
 		this.matrix = f.floydWarshall();
-		printMatrix(matrix);
+//		printMatrix(matrix);
 	}
     public void printMatrix(double[][] matrix) {
     	for(int i = 0; i < matrix.length; i++) {
