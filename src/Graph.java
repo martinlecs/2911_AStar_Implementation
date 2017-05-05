@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Implementation of a graph data structure
+ * @author martinle
+ *
+ */
 public class Graph {
 	private final HashMap<String, Node> mapOfNodes;
 	private final ArrayList<Edge> ListOfEdges;
@@ -9,6 +14,11 @@ public class Graph {
 		this.mapOfNodes = new HashMap<String, Node>();
 		this.ListOfEdges = new ArrayList<Edge>();
 	}
+	/**
+	 * Adds a node to the graph
+	 * @param val	The location
+	 * @param cost	The cost to Unload at the location
+	 */
 	public void addNode (String val, int cost) {
 		Node n = new Node(val, cost);
 		mapOfNodes.put(val, n);

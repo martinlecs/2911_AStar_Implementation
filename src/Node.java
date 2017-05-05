@@ -1,5 +1,9 @@
 import java.util.ArrayList;
-
+/**
+ * Implementation of Node class for the graph
+ * @author martinle
+ *
+ */
 public class Node {
 	private final String value;
 	private int unloadCost = 0;
@@ -32,24 +36,4 @@ public class Node {
 	public String toString() {
 		return "Node [Location=" + value + "]";
 	}
-	
-	public void printNodeInfo() {
-		//Value is connected to X with cost Y
-		for (Edge curr : connected) {
-			System.out.println(this.getValue() + " is connected to " + curr.getLocation2()
-							   + " with cost " + curr.getCost());
-		}
-	}
-	
-//	public void checkJob() {
-//		Iterator<Tuple<String, String>> curr = this.getJobList().iterator();
-//		while(curr.hasNext()) {
-//			Tuple<String, String> t = curr.next();
-//			if((t.getLeft().equals(this.getParent().getValue()) && t.getRight().equals(this.getValue()))) {
-//				this.jobList.remove(curr);
-//			}
-//		}
-		
-//	}
-    
 }

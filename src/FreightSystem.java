@@ -3,6 +3,7 @@ import java.io.*;
 
 /**
  * 
+ * Reads a file and prints out the result of the A* search
  * @author martinle
  *
  */
@@ -11,7 +12,9 @@ public class FreightSystem {
 		
 		//declare a new Graph
 		Graph g = new Graph();;
-		LinkedList<Edge> jobList = new LinkedList<Edge>();	
+		LinkedList<Edge> jobList = new LinkedList<Edge>();
+    	Strategy strategy = new Heuristic2();
+
 		Scanner sc = null;
 		try {
 			sc = new Scanner(new FileReader(args[0]));
@@ -46,12 +49,10 @@ public class FreightSystem {
 		    	}
 		    }
 			if (!jobList.isEmpty()) {
+				addTravelCostToJobs(jobList, g);
+				//Check if there is a solution
+				AStarSearch(g, jobList, strategy);
 
-				if(addTravelCostToJobs(jobList, g)) {
-					AStarSearch(g, jobList);
-				} else {
-					System.err.println ("No solution");
-				}
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println ("File was not found");
@@ -60,25 +61,30 @@ public class FreightSystem {
 			if (sc != null) sc.close();
 		}
 	}
-	private static boolean addTravelCostToJobs(LinkedList<Edge> jobList, Graph g) {
+	/**
+	 * Adds travel costs to edges
+	 * @param jobList	The list of jobs (LinkedList<Edge>)
+	 * @param g			The Graph object
+	 */
+	private static void addTravelCostToJobs(LinkedList<Edge> jobList, Graph g) {
 		for(Edge e : jobList) { 
-			int i = 0;
 			for(Edge curr : g.getListOfEdges()) {
 				if(e.getLocation1().equals(curr.getLocation1()) && e.getLocation2().equals(curr.getLocation2())) {
 					e.setCost(curr.getCost());
-					i++;
-				}
-				else if(!e.getLocation1().equals(curr.getLocation1()) && !e.getLocation2().equals(curr.getLocation2()) && i == g.getListOfEdges().size()) {
-					return false;
 				}
 			}
 		}
-		return true;
 	}
-  public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList){
+	/**
+	 * Given a graph, the list of jobs to complete and a Strategy find the path the has the smallest cost
+	 * @param g			The Graph object
+	 * @param jobList	The LinkedList<Edge> of jobs to complete
+	 * @param strategy	The heuristic to use
+	 * @return			A boolean value depending if the search was successful
+	 */
+  public static boolean AStarSearch(Graph g, LinkedList<Edge> jobList, Strategy strategy){
     	PriorityQueue<State> open = new PriorityQueue<State>(new StateComparator());
     	HashSet<State> closed = new HashSet<State>();
-    	Strategy s = new Heuristic();
     	 
     	boolean found = false;
         int nodesExpanded = 0;
@@ -94,8 +100,6 @@ public class FreightSystem {
             closed.add(current);
             nodesExpanded++;
             int cost_so_far = current.getCostSoFar();
-//	            System.out.println((closed));
-            //System.out.println(cost_so_far);
             
             if (current.getJobList().isEmpty()) {
             	found = true;
@@ -121,7 +125,7 @@ public class FreightSystem {
                 	next.setCostSoFar(new_cost); 	
                 	next.removeJob(e);
                 }
-        		next.setHeuristic(s.getHeuristic(g, next)  /* + new_cost*/);
+        		next.setHeuristic(strategy.getHeuristic(g, next));
 //	             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
             		open.add(next);	
 //	             	}
@@ -129,22 +133,13 @@ public class FreightSystem {
         }
         return found;       
     }
-
-    /**
-     * Gives you the path that was taken to reach the goal
-     * @param target
-     * @return
-     */
-//	    private static List<String> getPath (State end) {
-// 
-//	    	List<String> path = new ArrayList<String>();
-//	    	for(State state = end; state.getPrevState() != null; state = state.getPrevState()) {
-//	    		path.add(state.getLocation());
-//	    	}
-//	    	path.add("Sydney");
-//	    	Collections.reverse(path);
-//	    	return path;
-//	    }
+  	
+  	/**
+  	 * Gives you the path taken to reach the goal state
+  	 * @param g		The graph objectg
+  	 * @param end	The goal state found by A* search
+  	 * @param jobList The list of jobs that had to be completed
+  	 */
     private static void printPath (Graph g, State end, LinkedList<Edge> jobList) {
     	//Get list of states accessed
     	ArrayList<Edge> jobPath = new ArrayList<Edge>();
@@ -169,6 +164,11 @@ public class FreightSystem {
     	}
     }    
 }
+/**
+ * Implementation of the Comparator class for the PQ
+ * @author martinle
+ *
+ */
 final class StateComparator implements Comparator<State> {
 
 	@Override

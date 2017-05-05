@@ -2,7 +2,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-
+/**
+ * Implementation of State class for A* search
+ * @author martinle
+ *
+ */
 public class State {
 	
 	private String location;
@@ -58,6 +62,11 @@ public class State {
 		this.path = path;
 	}
 	
+	/**
+	 * Checks if an edge is in the job list
+	 * @param e		The edge that we want to check
+	 * @return		A boolean value
+	 */
 	public boolean checkJob(Edge e) {
 		for(Edge curr : this.jobList) {
 			if(curr.equals(e)) {
@@ -66,6 +75,10 @@ public class State {
 		}
 		return false;
 	}
+	/**
+	 * Removes a job from the list
+	 * @param e		The edge that we want to remove
+	 */
 	public void removeJob (Edge e) {
 		ListIterator<Edge> curr = this.jobList.listIterator();
 		while(curr.hasNext()) {
@@ -76,7 +89,10 @@ public class State {
 			}
 		}
 	}
-
+	/**
+	 * Copies a list of edges
+	 * @return	A copy of the LinkedList<Edge> target
+	 */
 	protected LinkedList<Edge> copyJobList() {
 		LinkedList<Edge> newList = new LinkedList<Edge>();
 		for(Edge e: this.getJobList()) {
@@ -84,13 +100,19 @@ public class State {
 		}
 		return newList;
 	}
-
+	
+	/**
+	 * Overriding the toString method, mainly for debugging purposes
+	 */
 	@Override
 	public String toString() {
 		String s = (this.getPrevState() == null) ? "at start" : prevState.getLocation();
 		return "State [location=" + location + ", jobList=" + jobList + ", costSoFar=" + costSoFar + ", prevState=" + s + "]";
 	}
 	
+	/**
+	 * Overriding the hashCode method, for the closed set
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -104,6 +126,9 @@ public class State {
 		return result;
 	}
 	
+	/**
+	 * Overriding the equals method, for the closed set
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
@@ -132,6 +157,12 @@ public class State {
 		return true;
 	}
 	
+	/**
+	 * Check if a list of edges is equal to another list of edges
+	 * @param a		List A
+	 * @param b		List B
+	 * @return		Boolean value
+	 */
 	private boolean EdgeListEquals (LinkedList<Edge> a, LinkedList<Edge> b) {
 	//Check if either are null
 	if(a == null || b == null) return false;
@@ -152,6 +183,11 @@ public class State {
 	return true;
 	}
 	
+	/**
+	 * Creates a hashcode for a LinkedList of Edges
+	 * @param e
+	 * @return
+	 */
 	private int jobListHash(LinkedList<Edge> e) {
 		Iterator<Edge> iterator = e.iterator();
 		int hash = 0;

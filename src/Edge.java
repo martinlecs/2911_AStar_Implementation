@@ -1,4 +1,8 @@
-
+/**
+ * Implements Edges of Graph
+ * @author martinle
+ *
+ */
 public class Edge {
     private int cost;	//the weight of the edge
     private final String location1;
@@ -30,7 +34,7 @@ public class Edge {
 		Edge newEdge = new Edge(this.getCost(), this.getLocation1(), this.getLocation2());
 		return newEdge;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Edge [cost=" + cost + ", location1=" + location1 + ", location2=" + location2 + "]";
@@ -69,9 +73,4 @@ public class Edge {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
-    
 }

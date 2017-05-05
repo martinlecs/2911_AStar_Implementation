@@ -1,34 +1,44 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map.Entry;
-
+/**
+ * Calculates the total distance to reach each job from the current location + total distance to complete a job
+ * Initialising the heuristic for the first time is O(n^3) but any subsequent call to this class has O(n) runtime
+ * Very good to use on certain graphs
+ * Not very good to use on graphs where one edge that we must visit has high cost compared to the other edges
+ * Not admissible but good for experimentation
+ * @author martinle
+ *
+ */
 public class Heuristic2 implements Strategy{
-	HashMap<String, Integer> cities;
-	HashMap<Integer, String> hash;
-	double[][] matrix;
+	private HashMap<String, Integer> cities;
+	private HashMap<Integer, String> hash;
+	private double[][] matrix;
 	
+	/**
+	 * Initialises the heuristic, if it hasn't been yet and calls a function to calculate the heuristic
+	 */
 	@Override
-	public int getHeuristic(Graph g, State state) {
+	public int getHeuristic(Graph g, State state) { 
+		if (this.cities == null && this.hash == null && this.matrix == null) {
+			initialiseHeuristic(g);
+		}
+		return getCostsToReachAllJobs (g, state);
+	}
+	/**
+	 * Initialises the heuristic by creating a HashMap of Cities and Integers for accessory functions and creates the Floyd-Warshall matrix
+	 * @param g
+	 */
+	private void initialiseHeuristic(Graph g) {
 		getMapOfCities(g);
 		getFloydWarshall(g, cities);
 		getHashOfIntegersToCities (g);
-		int hCost = 0;
-		for(Edge e: state.getJobList()) {
-			hCost += (e.getCost() + g.getMapOfNodes().get(e.getLocation2()).getUnloadCost()) + e.getCost();
-		}
-		//hCost += getCostsToReachAllJobs (g, state); 
-		return hCost;
 	}
-
 	/**
 	 * Gets total travel cost from current location to all other jobs.
-	 * @param g
-	 * @param s
-	 * @return
+	 * @param g		Graph object
+	 * @param s		The current state
+	 * @return		The value of the heuristic
 	 */
 	public int getCostsToReachAllJobs (Graph g, State s) {
 		HashMap<String, Integer> cities = this.cities;
@@ -43,7 +53,13 @@ public class Heuristic2 implements Strategy{
 		}
 		return (int) total;
 	}
-	
+	/**
+	 * Checks if an location is in the joblist
+	 * @param g			The graph object
+	 * @param s			The current state
+	 * @param city		The location as an integer as defined in the HashMap
+	 * @return			A boolean value, true if in joblist, false otherwise
+	 */
 	private boolean checkInJobList(Graph g, State s, int city) {
 		for (Edge edge : s.getJobList()) {
 			if (this.hash.get(city).equals(edge.getLocation1()) || this.hash.get(city).equals(edge.getLocation2())) {
@@ -53,6 +69,10 @@ public class Heuristic2 implements Strategy{
 		return false;
 	}
 	
+	/**
+	 * Creates a hash of Cities where cities are defined by the order that they were made
+	 * @param g		The graph object
+	 */
 	private void getHashOfIntegersToCities (Graph g) {
 		HashMap<Integer, String> hash = new HashMap<Integer, String>();
 		int counter = 0;
@@ -67,6 +87,10 @@ public class Heuristic2 implements Strategy{
 		this.hash = hash;
 	}
 	
+	/**
+	 * Creates a hash of cities where inputting a String (name of location) will return its number
+	 * @param g		The Graph object
+	 */
 	private void getMapOfCities(Graph g) {
 		int counter = 0;
 		HashMap<String, Integer> cities = new HashMap<String, Integer>();
@@ -80,6 +104,11 @@ public class Heuristic2 implements Strategy{
 		}
 		this.cities = cities;
 	}
+	/**
+	 * Creates the Floyd-Warshall matrix which finds the shortest path to each location, from every location
+	 * @param g			The graph object
+	 * @param cities	The city hash
+	 */
 	private void getFloydWarshall(Graph g, HashMap<String, Integer> cities) {
 		FloydWarshall f = new FloydWarshall(g.getMapOfNodes().size());
 		Iterator<Entry<String, Node>> curr = g.getMapOfNodes().entrySet().iterator();
@@ -91,64 +120,4 @@ public class Heuristic2 implements Strategy{
 		}
 		this.matrix = f.floydWarshall();
 	}
-}
-
-final class sortEdges implements Comparator<Edge> {
-    
-	@Override
-    public int compare(Edge a, Edge b){
-		if(a.getCost() > b.getCost()){
-	        return 1;
-	    } else if (a.getCost() < b.getCost()){
-	        return -1;
-	    } else{
-	        return 0;
-	    }
-	}
-}
-
-
-final class FloydWarshall {
-
-    // graph represented by an adjacency matrix
-    private double[][] graph;
-
-    public FloydWarshall(int n) {
-        this.graph = new double[n][n];
-        initGraph();
-    }
-
-    private void initGraph() {
-        for (int i = 0; i < graph.length; i++) {
-            for (int j = 0; j < graph.length; j++) {
-                if (i == j) {
-                    graph[i][j] = 0;
-                } else {
-                    graph[i][j] = Double.POSITIVE_INFINITY;
-                }
-            }
-        }
-    }
-
-    // utility function to add edges to the adjacencyList
-    public void addEdge(int from, int to, double weight) {
-        graph[from][to] = weight;
-    }
-
-    // all-pairs shortest path
-    public double[][] floydWarshall() {
-        double[][] distances;
-        int n = this.graph.length;
-        distances = Arrays.copyOf(this.graph, n);
-
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    distances[i][j] = Math.min(distances[i][j], distances[i][k] + distances[k][j]);
-                }
-            }
-        }
-        return distances;
-    }
-
 }
