@@ -28,7 +28,7 @@ public class Searcher{
             closed.add(current);
             nodesExpanded++;
             int cost_so_far = current.getCostSoFar();
-            System.out.println((closed));
+//            System.out.println((closed));
             //System.out.println(cost_so_far);
             
             if (current.getJobList().isEmpty()) {
@@ -50,14 +50,14 @@ public class Searcher{
                 next.setJobList(current.copyJobList());
                 Edge e = new Edge(0, next.getPrevState().getLocation(), next.getLocation());
                 if(next.checkJob(e)) {
-                	new_cost += g.getMapOfNodes().get(next.getLocation()).getUnloadCost();
+//                	new_cost += g.getMapOfNodes().get(next.getLocation()).getUnloadCost();
                 	next.setCostSoFar(new_cost);
                 	next.removeJob(e);
                 }
         		next.setHeuristic(s.getHeuristic(g, next)  /* + new_cost*/);
-             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
+//             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
             		open.add(next);	
-             	}
+//             	}
             }
         }
         return found;       
