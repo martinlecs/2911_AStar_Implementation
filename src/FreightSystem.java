@@ -11,7 +11,9 @@ public class FreightSystem {
 	public static void main (String[] args) throws IOException{
 		
 		//declare a new Graph
-		Graph g = new Graph();;
+		Graph g = new Graph();
+		//Create a Floyd-Warshall Matrix
+
 		LinkedList<Edge> jobList = new LinkedList<Edge>();
     	Strategy strategy = new Heuristic2();
 
@@ -49,10 +51,45 @@ public class FreightSystem {
 		    	}
 		    }
 			if (!jobList.isEmpty()) {
+				FloydWarshall f = new FloydWarshall(g.getMapOfNodes().size());
+				//Create a hashmap of Cities
+				ArrayList<Node> locations = new ArrayList<Node>();
+				locations.addAll(g.getMapOfNodes().values());
+				HashMap<String, Integer> citiesMap = new HashMap<String, Integer>();
+				Iterator<Node> iter = locations.iterator();
+				for(int i = 0; i < g.getMapOfNodes().size(); i++) {
+					citiesMap.put(iter.next().getValue(), i);
+				}
+				for(Edge curr : g.getListOfEdges()) {
+					
+					f.addEdge(citiesMap.get(curr.getLocation1()), citiesMap.get(curr.getLocation2()), (double) curr.getCost());
+				}
+				System.out.println(citiesMap.values());
+				System.out.println(citiesMap.keySet());
+			
+				double[][] matrix = f.floydWarshall();
+
+				//from a, must be able to find a shortest path to any node
+				//if there is no path to a node and the node is in the job list, then there is no solution
+				int j = 0;
+				for(; j < g.getMapOfNodes().size()-1; j++) {
+					if (matrix[0][j] == Double.POSITIVE_INFINITY) {
+						//check through job list to find occurrence of 
+						ArrayList<String> s = new ArrayList<String>();
+						s.addAll(citiesMap.keySet());
+						String location = s.get(j);
+						for(Edge cur : jobList) {
+							if(location.equals(cur.getLocation1()) || location.equals(cur.getLocation2())) {
+								System.err.println ("No solution");
+								System.exit(0);
+							}
+						}				
+					}
+				}
+				//If passed the test, perform the search
 				addTravelCostToJobs(jobList, g);
 				//Check if there is a solution
 				AStarSearch(g, jobList, strategy);
-
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println ("File was not found");
@@ -126,9 +163,9 @@ public class FreightSystem {
                 	next.removeJob(e);
                 }
         		next.setHeuristic(strategy.getHeuristic(g, next));
-//	             	while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
+	             while (!closed.contains(next)) { //BUG: for some reason keeps checking the same object in set
             		open.add(next);	
-//	             	}
+	             }
             }
         }
         return found;       

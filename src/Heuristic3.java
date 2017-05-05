@@ -22,15 +22,17 @@ public class Heuristic3 implements Strategy{
 		sortEdges comparator = new sortEdges();
 		g.getMapOfNodes().get(s.getLocation()).getConnected().sort(comparator);
 		ArrayList<Edge> sortedList = g.getMapOfNodes().get(s.getLocation()).getConnected();
+		System.out.println(sortedList);
 		LinkedList<Edge> jobList = s.getJobList();
 		int costNextJob = 0;
 		for(Edge e: sortedList) {
 			for(Edge job : jobList) {
-				if(e.getLocation2() == job.getLocation1()) {
+				if(e.getLocation2().equals(job.getLocation1()) || e.getLocation2().equals(job.getLocation2())) {
 					costNextJob = job.getCost();
 				}
 			}
 		}
+		System.out.println(costNextJob);
 		return costNextJob;
 	}
 }

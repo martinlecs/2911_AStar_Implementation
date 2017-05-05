@@ -34,6 +34,7 @@ public class FloydWarshall {
     // utility function to add edges to the adjacencyList
     public void addEdge(int from, int to, double weight) {
         graph[from][to] = weight;
+        graph[to][from] = weight;
     }
 
     // all-pairs shortest path
@@ -41,14 +42,22 @@ public class FloydWarshall {
         double[][] distances;
         int n = this.graph.length;
         distances = Arrays.copyOf(this.graph, n);
-
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     distances[i][j] = Math.min(distances[i][j], distances[i][k] + distances[k][j]);
+
                 }
             }
         }
         return distances;
+    }
+    public void printMatrix() {
+    	for(int i = 0; i < this.graph.length; i++) {
+    		for(int j = 0; j < this.graph.length; j++) {
+    			System.out.print("[" + this.graph[i][j] + "]");
+    		}
+    		System.out.print("\n");
+    	}
     }
 }

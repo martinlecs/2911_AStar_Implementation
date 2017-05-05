@@ -10,7 +10,7 @@ public class CombinedHeuristic implements Strategy{
 	@Override
 	public int getHeuristic(Graph g, State state) {
 		Strategy i = new Heuristic();
-		Strategy j = new Heuristic2();
+		Strategy j = new Heuristic3();
 		return i.getHeuristic( g, state) + j.getHeuristic(g, state);
 	}
 	
