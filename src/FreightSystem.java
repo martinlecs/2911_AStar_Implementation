@@ -13,7 +13,6 @@ public class FreightSystem {
 		
 		//declare a new Graph
 		Graph g = new Graph();
-		//Create a Floyd-Warshall Matrix
 
 		LinkedList<Edge> jobList = new LinkedList<Edge>();
     	Strategy strategy = new Heuristic();
