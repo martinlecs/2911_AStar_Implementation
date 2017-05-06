@@ -3,9 +3,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
- * Calculates how far it is to the next job.
- * It runs at O(n^2). However, we must sort the list of jobs we have each time for it to work efficiently,
- * This algorithm is used mainly for experimentation.
+ * Calculates how far it is to the closest job (ie. with minimum travel cost). It looks for the cheapest possible move, that is an objective on the joblist
+ * It runs at O(n^2). However, we must sort the list of jobs we have each time for it to work efficiently.
+ * This heuristic is admissible.
  * 
  * @author martinle
  *
@@ -22,7 +22,6 @@ public class Heuristic3 implements Strategy{
 		sortEdges comparator = new sortEdges();
 		g.getMapOfNodes().get(s.getLocation()).getConnected().sort(comparator);
 		ArrayList<Edge> sortedList = g.getMapOfNodes().get(s.getLocation()).getConnected();
-		System.out.println(sortedList);
 		LinkedList<Edge> jobList = s.getJobList();
 		int costNextJob = 0;
 		for(Edge e: sortedList) {
@@ -32,7 +31,6 @@ public class Heuristic3 implements Strategy{
 				}
 			}
 		}
-		System.out.println(costNextJob);
 		return costNextJob;
 	}
 }

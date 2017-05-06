@@ -3,7 +3,8 @@ import java.io.*;
 
 /**
  * 
- * Reads a file and prints out the result of the A* search
+ * Reads a file and prints out the result of the A* search. Also checks if there is a possible solution before
+ * going through the search
  * @author martinle
  *
  */
@@ -15,7 +16,7 @@ public class FreightSystem {
 		//Create a Floyd-Warshall Matrix
 
 		LinkedList<Edge> jobList = new LinkedList<Edge>();
-    	Strategy strategy = new Heuristic2();
+    	Strategy strategy = new Heuristic();
 
 		Scanner sc = null;
 		try {

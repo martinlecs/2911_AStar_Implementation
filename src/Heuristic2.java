@@ -5,8 +5,7 @@ import java.util.Map.Entry;
  * Calculates the total distance to reach each job from the current location + total distance to complete a job
  * Initialising the heuristic for the first time is O(n^3) but any subsequent call to this class has O(n) runtime
  * Very good to use on certain graphs
- * Not very good to use on graphs where one edge that we must visit has high cost compared to the other edges
- * Not admissible but good for experimentation
+ * Not very good to use on graphs where one edge that we must visit has high cost compared to the other edges.
  * @author martinle
  *
  */
@@ -43,7 +42,7 @@ public class Heuristic2 implements Strategy{
 	public int getCostsToReachAllJobs (Graph g, State s) {
 		HashMap<String, Integer> cities = this.cities;
 		double[][] matrix = this.matrix;
-		//check if i is in joblist
+		
 		int i = 0;
 		double total = matrix[cities.get(s.getLocation())][i];
 		for( ; i < cities.size(); i++) {
@@ -52,6 +51,18 @@ public class Heuristic2 implements Strategy{
 			}
 		}
 		return (int) total;
+		
+//		//find best possible move (cheapest) thats in the job list
+//		double min = Double.POSITIVE_INFINITY;
+//		int i = 0;
+//		for( ; i < cities.size(); i++) {
+//		if(checkInJobList(g, s, i)) {
+//			if(matrix[cities.get(s.getLocation())][i] < min && matrix[cities.get(s.getLocation())][i] != 0) {
+//				min = matrix[cities.get(s.getLocation())][i];
+//			}
+//		}
+//	}
+//	return (int) min;
 	}
 	/**
 	 * Checks if an location is in the joblist
@@ -121,6 +132,10 @@ public class Heuristic2 implements Strategy{
 		this.matrix = f.floydWarshall();
 //		printMatrix(matrix);
 	}
+	/**
+	 * Prints out the matrix
+	 * @param matrix
+	 */
     public void printMatrix(double[][] matrix) {
     	for(int i = 0; i < matrix.length; i++) {
     		for(int j = 0; j < matrix.length; j++) {
